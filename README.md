@@ -26,3 +26,7 @@ After training, an out-of-sample test set partitioned out before the training st
 1.  Atrial Fibrillation: Sensitivity = 95%, Specificity = 85%
 2.	Atrial Flutter: Sensitivity = 91%, Specificity = 98%
 3.	Myocardial Infarction: Sensitivity = 99%, Specificity = 72%
+
+## Model Usage
+
+The trained models are stored in the folder "models" and can be executed by running the commands in the last section of the respective jupyter notebook files for each model.
