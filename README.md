@@ -6,7 +6,7 @@ Heart conditions affect 500 million people yearly, and a 12-Lead Electrocardiogr
 This model has been trained on 4 important conditions: Atrial Fibrillation (AFib), Atrial Flutter (AFl), Supraventricular Tachycardia (SVT), and Myocardial Infarction (MI). Their Sensitivity (Sn), or true-positive, and Specificity (Sp), or true-negative, rates on out-of-sample test sets are below:
 ```
 AFib -  Sn: 95.0%, Sp: 84.7%
-AFl  -  Sn: XX%, Sp: XX%
+AFl  -  Sn: 90.8%, Sp: 98.3%
 SVT  -  Sn: XX%, Sp: XX%
 MI:  -  Sn: XX%, Sp: XX%
 ```
