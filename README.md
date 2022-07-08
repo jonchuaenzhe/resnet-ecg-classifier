@@ -5,7 +5,7 @@ Heart conditions affect 500 million people yearly, and a 12-Lead Electrocardiogr
 
 This model has been trained on 4 important conditions: Atrial Fibrillation (AFib), Atrial Flutter (AFl), Supraventricular Tachycardia (SVT), and Myocardial Infarction (MI). Their Sensitivity (Sn), or true-positive, and Specificity (Sp), or true-negative, rates on out-of-sample test sets are below:
 ```
-AFib -  Sn: XX%, Sp: XX%
+AFib -  Sn: 95.0%, Sp: 84.7%
 AFl  -  Sn: XX%, Sp: XX%
 SVT  -  Sn: XX%, Sp: XX%
 MI:  -  Sn: XX%, Sp: XX%
@@ -14,7 +14,7 @@ Refer to this README for a quick summary of the implementation, or view the note
 
 ## Data & Preprocessing
 
-A total of 121,149 12-Lead ECG tracings from different patients were obtained from the following open-source databases:
+A total of 121,149 12-Lead ECG tracings from different countries were obtained from the following open-source databases:
 ```
 1. CPSC Database: 13,256
 2. INCART Database: 74
@@ -27,7 +27,7 @@ The data can be downloaded from https://physionetchallenges.org/2021/. A sample 
 
 ![ECG_Sample](images/ecg_sample.png)
 
-The preprocessing included reading the ECG metadata from the associated .mat files, before filtering out tracings which had unsuitable lenghts or data formats. As the actual ECG data files were large, only the filepaths and metadata was used to preprocess the data. A DataFrame of the final dataset was constructed that included the filepath and the labels for the 4 conditions mentioned, and then saved into the CSV file "full_dataset.csv".
+The preprocessing steps included reading the ECG metadata from the associated .mat files, before filtering out tracings which had unsuitable lenghts or data formats. As the actual ECG data files were large, only the filepaths and metadata was used to preprocess the data. A DataFrame of the final dataset was constructed that included the filepath and the labels for the 4 conditions mentioned, and then saved into the CSV file "full_dataset.csv".
 
 ## ResNet Model Overview
 
@@ -35,19 +35,23 @@ A ResNet employs skip-connections to mitigate the problem of vanishing gradients
 
 ![resnet](images/resnet.png)
 
-A 1D CNN ResNet was used, with 3 Residual blocks used for a relatively small model of less than 500,000 weights. It was trained from scratch on the ECG data, as there are no suitable transfer learning models available.
+As the ECG is a time-series data but usually interpreted by doctors as an image, a 1D CNN with a ResNet architecture was used, as it seemed to perform best based on literature. To prevent overfitting, a relatively small model of less than 500,000 weights with just 3 Residual Blocks was used. It was trained from scratch on the ECG data, as there are no suitable transfer learning models available. 
 
-## Model Training and Prediction
+## Training
 
-3 models were trained to predict Atrial Fibrillation (afib_model.ipynb), Atrial Flutter (afl_model.ipynb), and Myocardial Infarction (mi_model.ipynb).
+Four different models were trained for each of the conditions to ensure highest accuracy. Running their respective jupyter notebooks after generating the "full_dataset.csv" file will execute the steps required to train the model. Some of the key steps in the training are detailed below:
 
-Running their respective jupyter notebooks after generating the "full_dataset.csv" file will execute the steps required to train the model.
+### Data Augmentation
 
-After training, an out-of-sample test set partitioned out before the training steps were executed was used to evaulate the performance of the model. The results are as follows:
-1.  Atrial Fibrillation: Sensitivity = 95%, Specificity = 85%
-2.	Atrial Flutter: Sensitivity = 91%, Specificity = 98%
-3.	Myocardial Infarction: Sensitivity = 99%, Specificity = 72%
+To ensure that 
+
+## Evaluation
+
+An out-of-sample test set was partitioned out before the training steps were executed. It was used to evaulate the performance of the model, with the results reported above.
 
 ## Model Usage
 
-The trained models are stored in the folder "models" and can be executed by running the commands in the last section of the respective jupyter notebook files for each model.
+The trained models are stored in the folder "models" and can be loaded by running the following command:
+```
+tf.keras.models.load_model()
+```
