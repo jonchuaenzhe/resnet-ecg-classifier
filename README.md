@@ -43,7 +43,23 @@ Four different models were trained for each of the conditions to ensure highest 
 
 ### Data Augmentation
 
-To ensure that 
+Most ECG signals have 3 forms of noise: (1) Baseline Wander - a low frequency noise, (2) Power Line Interferecne - at 50Hz, and (3) Motion Artifacts - similar to random noise. These noises were randomly added to training samples during training to increase the model's robustness to noise.
+
+### Upsampling
+
+The number of ECGs with the specified condition is always in the vast minority, thus the data was upsampled to provide greater class balance.
+
+### Data Loader
+
+It was unfeasible to store all the ECG data on RAM for training. Instead, the tf.data.Dataset class was used to execute a function that loads the full ECG data based on the filepath.
+
+### Reduce Overfitting
+
+Some additional steps were taken to reduce overfitting. They are as follows:
+1. Adding large L2 regularization parameters on each Conv Layer to prevent large weights
+2. Adding Dropout after each Conv Layer
+3. Adding Label Smoothing to prevent overconfident predictions
+4. Introducing Class Weights to further balance the data
 
 ## Evaluation
 
