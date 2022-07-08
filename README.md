@@ -7,8 +7,8 @@ This model has been trained on 4 important conditions: Atrial Fibrillation (AFib
 ```
 AFib -  Sn: 95.0%, Sp: 84.7%
 AFl  -  Sn: 90.8%, Sp: 98.3%
-SVT  -  Sn: XX%, Sp: XX%
-MI:  -  Sn: XX%, Sp: XX%
+SVT  -  Sn: 88.8%, Sp: 99.3%
+MI:  -  Sn: 94.2%, Sp: 91.0%
 ```
 Refer to this README for a summary of the implementation, or view the notebooks for in-depth description.
 
