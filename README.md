@@ -10,7 +10,7 @@ AFl  -  Sn: 90.8%, Sp: 98.3%
 SVT  -  Sn: XX%, Sp: XX%
 MI:  -  Sn: XX%, Sp: XX%
 ```
-Refer to this README for a quick summary of the implementation, or view the notebooks for an in-depth description.
+Refer to this README for a summary of the implementation, or view the notebooks for in-depth description.
 
 ## Data & Preprocessing
 
@@ -63,7 +63,7 @@ Some additional steps were taken to reduce overfitting. They are as follows:
 
 ## Evaluation
 
-An out-of-sample test set was partitioned out before the training steps were executed. It was used to evaulate the performance of the model, with the results reported above.
+An out-of-sample test set with about 20,000 ECGs (20% of total dataset) was partitioned out before the training steps were executed. It was used to evaulate the performance of the model, with the results reported above.
 
 ## Model Usage
 
