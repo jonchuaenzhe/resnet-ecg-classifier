@@ -1,9 +1,9 @@
 Aug 2021 - June 2022
 # Automated ECG Diagnosis with ResNet
 
-Heart conditions affect 500 million people yearly, and a 12-Lead Electrocardiogram (ECG) is one of the best ways to diagnose them effectively. However, interpreting an ECG usually requires a specialist, who are too busy to monitor patients constantly. This ResNet Model can automatically diagnose conditions from ECGs with human-level accuracy, so that busy doctors can be alerted when patients require attention.
+This ResNet Model can automatically diagnose conditions from ECGs with human-level accuracy, so that busy doctors can be alerted when patients require attention.
 
-This model has been trained on 4 important conditions: Atrial Fibrillation (AFib), Atrial Flutter (AFl), Supraventricular Tachycardia (SVT), and Myocardial Infarction (MI). Their Sensitivity (Sn), or true-positive, and Specificity (Sp), or true-negative, rates on out-of-sample test sets are below:
+This model has been trained on 4 important conditions: Atrial Fibrillation (AFib), Atrial Flutter (AFl), Supraventricular Tachycardia (SVT), and Myocardial Infarction (MI). Their Sensitivity (Sn), or true-positive, and Specificity (Sp), or true-negative, rates on out-of-sample test sets (20% of total dataset) are below:
 ```
 AFib -  Sn: 95.0%, Sp: 84.7%
 AFl  -  Sn: 90.8%, Sp: 98.3%
@@ -27,7 +27,7 @@ The data can be downloaded from https://physionetchallenges.org/2021/. A sample 
 
 ![ECG_Sample](images/ecg_sample.png)
 
-The preprocessing steps included reading the ECG metadata from the associated .mat files, before filtering out tracings which had unsuitable lenghts or data formats. As the actual ECG data files were large, only the filepaths and metadata was used to preprocess the data. A DataFrame of the final dataset was constructed that included the filepath and the labels for the 4 conditions mentioned, and then saved into the CSV file "full_dataset.csv".
+Preprocessing included reading the ECG metadata from the associated .mat files, before filtering out tracings which had unsuitable lenghts or data formats. A DataFrame of the final dataset was constructed that included the filepath and the labels for the 4 conditions and was saved into "full_dataset.csv".
 
 ## ResNet Model Overview
 
@@ -35,35 +35,16 @@ A ResNet employs skip-connections to mitigate the problem of vanishing gradients
 
 ![resnet](images/resnet.png)
 
-As the ECG is a time-series data but usually interpreted by doctors as an image, a 1D CNN with a ResNet architecture was used, as it seemed to perform best based on literature. To prevent overfitting, a relatively small model of less than 500,000 weights with just 3 Residual Blocks was used. It was trained from scratch on the ECG data, as there are no suitable transfer learning models available. 
+A 1D CNN with a ResNet architecture was used, as it seemed to perform best based on literature. To prevent overfitting, a relatively small model of less than 500,000 weights with just 3 Residual Blocks was used.
 
 ## Training
 
 Four different models were trained for each of the conditions to ensure highest accuracy. Running their respective jupyter notebooks after generating the "full_dataset.csv" file will execute the steps required to train the model. Some of the key steps in the training are detailed below:
 
-### Data Augmentation
-
-Most ECG signals have 3 forms of noise: (1) Baseline Wander - a low frequency noise, (2) Power Line Interferecne - at 50Hz, and (3) Motion Artifacts - similar to random noise. These noises were randomly added to training samples during training to increase the model's robustness to noise.
-
-### Upsampling
-
-The number of ECGs with the specified condition is always in the vast minority, thus the data was upsampled to provide greater class balance.
-
-### Data Loader
-
-It was unfeasible to store all the ECG data on RAM for training. Instead, the tf.data.Dataset class was used to execute a function that loads the full ECG data based on the filepath.
-
-### Reduce Overfitting
-
-Some additional steps were taken to reduce overfitting. They are as follows:
-1. Adding large L2 regularization parameters on each Conv Layer to prevent large weights
-2. Adding Dropout after each Conv Layer
-3. Adding Label Smoothing to prevent overconfident predictions
-4. Introducing Class Weights to further balance the data
-
-## Evaluation
-
-An out-of-sample test set with about 20,000 ECGs (20% of total dataset) was partitioned out before the training steps were executed. It was used to evaulate the performance of the model, with the results reported above.
+1. Data Augmentation: Common ECG noise was randomly added to training samples to increase robustness to them.
+2. Upsampling: The ECGs with a condition is always in the minority, thus upsampling was done for greater class balance.
+3. Data Loader: tf.data.Dataset class was used to load the ECG data at point of training based on the filepath.
+4. Reduce Overfitting: (a) add L2 regularization to Conv Layer, (b) add DropOut after each Conv Layer, (c) use Label Smooring to prevent overconfident predictions, (d) add class weights to further balance data.
 
 ## Model Usage
 
