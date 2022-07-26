@@ -14,7 +14,7 @@ Refer to this README for a summary of the implementation, or view the notebooks 
 
 ## Data & Preprocessing
 
-A total of 121,149 12-Lead ECG tracings from different countries were obtained from the following open-source databases:
+A total of 121,149 12-Lead ECG tracings from different countries were obtained from open-source databases:
 ```
 1. CPSC Database: 13,256
 2. INCART Database: 74
@@ -41,8 +41,8 @@ A 1D CNN with a ResNet architecture was used, as it seemed to perform best based
 
 Four different models were trained for each of the conditions to ensure highest accuracy. Running their respective jupyter notebooks after generating the "full_dataset.csv" file will execute the steps required to train the model. Some of the key steps in the training are detailed below:
 
-1. Data Augmentation: Common ECG noise was randomly added to training samples to increase robustness to them.
-2. Upsampling: The ECGs with a condition is always in the minority, thus upsampling was done for greater class balance.
+1. Data Augmentation: Common ECG noise was randomly added to training samples to increase robustness.
+2. Upsampling: ECGs with a condition is always in the minority; upsampling was done for greater class balance.
 3. Data Loader: tf.data.Dataset class was used to load the ECG data at point of training based on the filepath.
 4. Reduce Overfitting: (a) add L2 regularization to Conv Layer, (b) add DropOut after each Conv Layer, (c) use Label Smooring to prevent overconfident predictions, (d) add class weights to further balance data.
 
